@@ -19,10 +19,4 @@ public class MetodoExcepcion extends Exception {
 	public MetodoExcepcion(String message, Throwable cause) {
 		super(message, cause);
 	}
-
-	public MetodoExcepcion(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-	}
-
 }

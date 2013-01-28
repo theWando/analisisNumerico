@@ -8,31 +8,46 @@ import com.analisisnumerico.controlador.excepciones.MetodoExcepcion;
 public class FuncionConstructor {
 
 	public static String agregarPuntos(String funcion, Limite... limites) throws MetodoExcepcion {
-		int pos = 0;
-		for (Limite limite : limites) {
-			validarLimite(limite);
-			StringBuilder builder = new StringBuilder();
-			builder.append("{");
-			builder.append(pos);
-			builder.append("}");
-			String valor = "";
-			if(limite.isInicializado()){
-				valor = limite.getParametroFuncion().toString();
+		if (funcion.indexOf("{") != -1) {
+			for (Limite limite : limites) {
+				validarLimite(limite);
+				funcion = buildParameter(funcion, limite);
+				funcion = buildFunction(funcion, limite);
 			}
-			funcion = funcion.replace(builder.toString(), valor);
-			builder = new StringBuilder();
-			builder.append("{");
-			builder.append(pos+2);
-			builder.append("}");
-			valor = "";
-			if(limite.isCalculado()){
-				valor = limite.getValor().toString();
-			}
-			funcion = funcion.replace(builder.toString(), valor);
-			pos++;
 		}
 		return funcion;
 		
+	}
+
+	private static String buildFunction(String funcion, Limite limite) {
+		if (funcion.indexOf("[") != -1) {
+			StringBuilder builder = new StringBuilder();
+			builder = new StringBuilder();
+			builder.append("[");
+			builder.append(limite.getPunto());
+			builder.append("]");
+			String valor = "";
+			if (limite.isCalculado()) {
+				valor = limite.getValor().toString();
+			}
+			funcion = funcion.replace(builder.toString(), valor);
+		}
+		return funcion;
+	}
+
+	private static String buildParameter(String funcion, Limite limite) {
+		if (funcion.indexOf("{") != -1) {
+			StringBuilder builder = new StringBuilder();
+			builder.append("{");
+			builder.append(limite.getPunto());
+			builder.append("}");
+			String valor = "";
+			if (limite.isInicializado()) {
+				valor = limite.getParametroFuncion().toString();
+			}
+			funcion = funcion.replace(builder.toString(), valor);
+		}
+		return funcion;
 	}
 
 	/**

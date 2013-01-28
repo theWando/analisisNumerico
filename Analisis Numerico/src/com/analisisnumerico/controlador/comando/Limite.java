@@ -12,6 +12,16 @@ public class Limite {
 	private String funcion;
 	
 	private BigDecimal parametroFuncion;
+	
+	private String punto;
+
+	public String getPunto() {
+		return punto;
+	}
+
+	public void setPunto(String punto) {
+		this.punto = punto;
+	}
 
 	public String getFuncion() {
 		return funcion;
