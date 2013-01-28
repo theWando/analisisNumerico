@@ -29,6 +29,8 @@ public class FuncionConstructor {
 			String valor = "";
 			if (limite.isCalculado()) {
 				valor = limite.getValor().toString();
+			} else if (!limite.isCalculado() && limite.getFuncion() != null) {
+				
 			}
 			funcion = funcion.replace(builder.toString(), valor);
 		}
