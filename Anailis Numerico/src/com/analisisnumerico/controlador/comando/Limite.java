@@ -1,56 +1,69 @@
 package com.analisisnumerico.controlador.comando;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 public class Limite {
 	private boolean inicializado;
 	
 	private boolean calculado;
 	
-	private BigInteger valor;
+	private BigDecimal valor;
 	
 	private String funcion;
 	
-	private BigInteger parametroFuncion;
+	private BigDecimal parametroFuncion;
 
 	public String getFuncion() {
 		return funcion;
 	}
 
+	/**
+	 * Asigna la funcion a evaluar
+	 * @param funcion
+	 */
 	public void setFuncion(String funcion) {
 		this.funcion = funcion;
 	}
 
-	public BigInteger getParametroFuncion() {
+	/**
+	 * @return Obtiene el parametro que se evaluará en la funcion
+	 */
+	public BigDecimal getParametroFuncion() {
 		return parametroFuncion;
 	}
 
-	public void setParametroFuncion(BigInteger paramtroFuncion) {
-		this.parametroFuncion = paramtroFuncion;
+	/**
+	 * Asigna el valor que esrá evaluado en la función
+	 * @param parametroFuncion
+	 */
+	public void setParametroFuncion(String parametroFuncion) {
+		this.inicializado = true;
+		this.parametroFuncion = new BigDecimal(parametroFuncion);
 	}
 
 	public boolean isInicializado() {
 		return inicializado;
 	}
 
-	public void setInicializado(boolean inicializado) {
-		this.inicializado = inicializado;
-	}
-
-	public BigInteger getValor() {
+	/**
+	 * @return el valor resultante de la evaluacion de la funcion
+	 */
+	public BigDecimal getValor() {
 		return valor;
 	}
 
-	public void setValor(BigInteger valor) {
-		this.valor = valor;
+	/**
+	 * Se asing el resultado de la evaluación de la función
+	 * @param valor
+	 */
+	public void setValor(String valor) {
+		this.calculado = true;
+		this.valor = new BigDecimal(valor);
 	}
 
 	public boolean isCalculado() {
 		return calculado;
 	}
 	
-	public void setCalculado(boolean calculado) {
-		this.calculado = calculado;
-	}
 }
 

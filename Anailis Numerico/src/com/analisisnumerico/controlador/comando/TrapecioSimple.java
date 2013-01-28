@@ -11,7 +11,7 @@ public class TrapecioSimple extends Metodo {
 
 	public TrapecioSimple() {
 		super(2);
-		this.setFuncion("({0} - {1}) - (( {2} + {3})/2)");
+		this.setFuncion("({0} - {1}) - (({2} + {3})/2)");
 	}
 
 	@Override
@@ -20,10 +20,10 @@ public class TrapecioSimple extends Metodo {
 			throw new LimiteNoInicializadoExcepcion();
 		}
 		try {
-			this.getScript().eval(getFuncion());
+			String resultado = (String) this.getScript().eval(getFuncion());
+			this.setResultado(resultado);
 		} catch (ScriptException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new CalculoExcepcion("Error evaluando la función " + getFuncion());
 		}
 		return null;
 	}

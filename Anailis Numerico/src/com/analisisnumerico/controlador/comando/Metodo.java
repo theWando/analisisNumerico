@@ -1,5 +1,6 @@
 package com.analisisnumerico.controlador.comando;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +18,26 @@ public abstract class Metodo {
 	private String funcion;
 	
 	private ScriptEngine script;
+	
+	private BigDecimal resultado;
+
+	public BigDecimal getResultado() {
+		return resultado;
+	}
+
+	public void setResultado(String resultado) {
+		this.resultado = new BigDecimal(resultado);
+	}
 
 	public Metodo(int puntos){
 		this.limites = new ArrayList<>();
 		
-		ScriptEngineManager scriptManager = new ScriptEngineManager();
-		script = scriptManager.getEngineByExtension("JavaScript");
-		
+		ScriptEngineManager mgr = new ScriptEngineManager();
+	    this.script = mgr.getEngineByName("JavaScript");
+	    
 		this.puntos = puntos;
 	}
+	
 	public ScriptEngine getScript() {
 		return script;
 	}

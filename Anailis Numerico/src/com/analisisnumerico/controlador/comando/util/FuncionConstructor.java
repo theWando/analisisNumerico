@@ -15,7 +15,21 @@ public class FuncionConstructor {
 			builder.append("{");
 			builder.append(pos);
 			builder.append("}");
-			funcion.replace(builder.toString(), funcion);
+			String valor = "";
+			if(limite.isInicializado()){
+				valor = limite.getParametroFuncion().toString();
+			}
+			funcion = funcion.replace(builder.toString(), valor);
+			builder = new StringBuilder();
+			builder.append("{");
+			builder.append(pos+2);
+			builder.append("}");
+			valor = "";
+			if(limite.isCalculado()){
+				valor = limite.getValor().toString();
+			}
+			funcion = funcion.replace(builder.toString(), valor);
+			pos++;
 		}
 		return funcion;
 		
@@ -30,7 +44,7 @@ public class FuncionConstructor {
 	private static void validarLimite(Limite limite) throws LimiteNoInicializadoExcepcion, LimiteSinEvaluacionExcepcion {
 		if(limite == null)
 			throw new LimiteNoInicializadoExcepcion();
-		if(limite.getValor() == null || limite.getFuncion() == null || limite.getParametroFuncion() == null)
+		if((limite.getValor() == null && limite.getFuncion() == null)|| limite.getParametroFuncion() == null)
 			throw new LimiteSinEvaluacionExcepcion();
 	}
 }
