@@ -33,12 +33,16 @@ public abstract class Metodo {
 	}
 
 	public Metodo(int puntos){
+		this();
+		this.puntos = puntos;
+	}
+	
+	public Metodo(){
 		this.limites = new ArrayList<Limite>();
 		
 		ScriptEngineManager mgr = new ScriptEngineManager();
 	    this.script = mgr.getEngineByName("JavaScript");
 	    
-		this.puntos = puntos;
 	}
 	
 	public ScriptEngine getScript() {
@@ -66,13 +70,21 @@ public abstract class Metodo {
 	public List<Limite> getLimites() {
 		return limites;
 	}
-	public int getPuntos() {
-		return puntos;
-	}
+
 	public String getFuncion() {
 		return funcion;
 	}
+	
 	public void setFuncion(String funcion) {
 		this.funcion = funcion;
 	}
+
+	public int getPuntos() {
+		return puntos;
+	}
+
+	public void setPuntos(int puntos) {
+		this.puntos = puntos;
+	}
+	
 }
