@@ -14,10 +14,15 @@ public class TestRegex {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		 Pattern r = Pattern.compile("Yi");
+		 Pattern r = Pattern.compile("(SUM:)(\\{)([A-Z+][a-z+])(\\})");
 		 Matcher m = r.matcher(TrapecioCompuesto.FORMULA);
 		 if(m.find()){
-			System.out.println(m.group(0));
+			String group = m.group(0);
+			Pattern r1 = Pattern.compile("Yi");
+			Matcher m1 = r1.matcher(group);
+			System.out.println(group);
+			System.out.println(m1.find());
+			System.out.println(m1.group(0));
 		 }
 
 	}

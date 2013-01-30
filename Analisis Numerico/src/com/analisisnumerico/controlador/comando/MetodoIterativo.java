@@ -7,7 +7,6 @@ import com.analisisnumerico.controlador.comando.util.FuncionConstructor;
 import com.analisisnumerico.controlador.comando.util.WolframInvocator;
 import com.analisisnumerico.controlador.excepciones.LimiteNoInicializadoExcepcion;
 import com.analisisnumerico.controlador.excepciones.MetodoExcepcion;
-import com.analisisnumerico.controlador.excepciones.WAExcepcion;
 
 public abstract class MetodoIterativo extends Metodo {
 	
@@ -44,17 +43,20 @@ public abstract class MetodoIterativo extends Metodo {
 	
 	public abstract BigDecimal calcular() throws MetodoExcepcion;
 	
-	protected String calcularH(Limite limiteA, Limite limiteB) throws MetodoExcepcion{
+	protected String calcularH(Limite limiteA, Limite limiteB, int n) throws MetodoExcepcion{
 		this.limiteA = limiteA;
 		this.limiteB = limiteB;
+		this.n = n;
 		return calcularH();
 	}
 	
 	protected String calcularH() throws MetodoExcepcion {
 		String hCalculada = null;
-		if(limiteA == null || limiteB == null)
+		if(limiteA == null || limiteB == null || n == 0)
 			throw new LimiteNoInicializadoExcepcion();
-		String formulaConstruida = FuncionConstructor.agregarPuntos(FORMULA_H, limiteA, limiteB);
+		String stringN = Integer.toString(n);
+		Limite n = new Limite("n", stringN);
+		String formulaConstruida = FuncionConstructor.agregarPuntos(FORMULA_H, limiteA, limiteB, n);
 		hCalculada = FuncionConstructor.evaluarCadena(formulaConstruida);
 		this.h = new BigDecimal(hCalculada);
 		this.llenarTabla();
@@ -62,10 +64,11 @@ public abstract class MetodoIterativo extends Metodo {
 	}
 	
 	private void llenarTabla() throws MetodoExcepcion{
-		float a = Float.parseFloat(limiteA.getPunto());
-		float b = Float.parseFloat(limiteB.getPunto());
+		float a = limiteA.getParametroFuncion().floatValue();
+		float b = limiteB.getParametroFuncion().floatValue();
 		tabla = new HashMap<BigDecimal, BigDecimal>();
 		for(float i = a; i <= b; i = i + this.h.floatValue()){
+			String funcion = FuncionConstructor.agregarPuntos(this.funcion, new Limite("x", Float.toString(i)));
 			String funcionEvaluada = WolframInvocator.evaluate(funcion);
 			BigDecimal resultadoFuncion = new BigDecimal(funcionEvaluada);
 			tabla.put(new BigDecimal(i), resultadoFuncion);

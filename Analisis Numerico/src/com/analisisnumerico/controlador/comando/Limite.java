@@ -17,11 +17,10 @@ public class Limite {
 	
 	public Limite() { }
 	
-	public Limite(String punto, String valor){
+	public Limite(String punto, String parametroFuncion){
 		this.inicializado = true;
-		this.calculado = true;
 		this.punto = punto;
-		this.valor = new BigDecimal(valor);
+		this.parametroFuncion = new BigDecimal(parametroFuncion);
 	}
 
 	public String getPunto() {

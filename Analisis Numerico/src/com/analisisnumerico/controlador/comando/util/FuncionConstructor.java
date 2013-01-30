@@ -17,21 +17,18 @@ import com.analisisnumerico.controlador.excepciones.WAExcepcion;
 
 public class FuncionConstructor {
 	
-	private static final String SUMATORIA = "(SUM:)(\\[)([A-Z+][a-z+])(\\])";
+	private static final String SUMATORIA = "(SUM:)(\\{)([A-Z+][a-z+])(\\})";
 	
 	public static String agregarPuntos(String funcion, List<Limite> limites) throws MetodoExcepcion{
 		return agregarPuntos(funcion, (Limite[])limites.toArray());
 	}
 	public static String agregarPuntos(String funcion, Limite... limites) throws MetodoExcepcion {
-		if (funcion.indexOf("{") != -1) {
-			for (Limite limite : limites) {
-				validarLimite(limite);
-				funcion = buildParameter(funcion, limite);
-				funcion = buildFunction(funcion, limite);
-			}
+		for (Limite limite : limites) {
+			validarLimite(limite);
+			funcion = buildParameter(funcion, limite);
+			funcion = buildFunction(funcion, limite);
 		}
 		return funcion;
-		
 	}
 
 	private static String buildFunction(String funcion, Limite limite) throws MetodoExcepcion {
@@ -61,19 +58,17 @@ public class FuncionConstructor {
 		try {
 			ScriptEngineManager mgr = new ScriptEngineManager();
 			ScriptEngine engine = mgr.getEngineByName("JavaScript");
-			return (String) engine.eval(funcion);
+			return engine.eval(funcion).toString();
 		} catch (ScriptException e) {
 			return WolframInvocator.evaluate(funcion);
 		}
 	}
 
 	private static String buildParameter(String funcion, Limite limite) {
-		if (funcion.indexOf("{") != -1) {
-			String valor = "";
-			if (limite.isInicializado()) {
-				valor = limite.getParametroFuncion().toString();
-				funcion = reemplazar(funcion, "\\{"+limite.getPunto()+"\\}", valor);//funcion.replace(builder.toString(), valor);
-			}
+		String valor = "";
+		if (limite.isInicializado()) {
+			valor = limite.getParametroFuncion().toString();
+			funcion = reemplazar(funcion, "\\{"+limite.getPunto()+"\\}", valor);//funcion.replace(builder.toString(), valor);
 		}
 		return funcion;
 	}
@@ -87,20 +82,19 @@ public class FuncionConstructor {
 	private static void validarLimite(Limite limite) throws LimiteNoInicializadoExcepcion, LimiteSinEvaluacionExcepcion {
 		if(limite == null)
 			throw new LimiteNoInicializadoExcepcion();
-		if((limite.getValor() == null && limite.getFuncion() == null)|| limite.getParametroFuncion() == null)
+		if((limite.getValor() == null && limite.getFuncion() == null && !limite.isInicializado())|| limite.getParametroFuncion() == null)
 			throw new LimiteSinEvaluacionExcepcion();
 	}
 	
-	public static String buscarSuma(String funcion, BigDecimal... valores){
+	public static String buscarSuma(String funcion, Object... object){
 		Matcher m = getMatcher(SUMATORIA, funcion);
 		if(m.find()){
-			String suma = m.group(0);
-			BigDecimal resultado = new BigDecimal("0");
-			for (BigDecimal bigDecimal : valores) {
-				resultado.add(bigDecimal);
+			float resultado = 0F;
+			for (Object bigDecimal : object) {
+				BigDecimal d = new BigDecimal(bigDecimal.toString());
+				resultado += d.floatValue();
 			}
-			String sumaTXT = getMatcher("Yi", suma).group(0);
-			String sumaCalculada = buildParameter(sumaTXT, new Limite("Yi", resultado.toPlainString()));
+			String sumaCalculada = new BigDecimal(resultado).toPlainString();
 			return m.replaceFirst(sumaCalculada);
 		}
 		return null;
@@ -114,7 +108,7 @@ public class FuncionConstructor {
 		 return funcion;
 	}
 	
-	private static Matcher getMatcher(final String patron,final String objetivo) {
+	public static Matcher getMatcher(final String patron,final String objetivo) {
 		Pattern r = Pattern.compile(patron);
 		 Matcher m = r.matcher(objetivo);
 		return m;
