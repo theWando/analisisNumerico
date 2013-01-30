@@ -24,7 +24,7 @@ public class TestWAInvocator {
 		
 		String funcion = FuncionConstructor.agregarPuntos(SimpsonSimpleTresCuartos.FORMULA, limite, limite2);
 		System.out.println("funcion: " + funcion);
-		String resultado = WolframInvocator.invoke(funcion);
+		String resultado = WolframInvocator.evaluate(funcion);
 		System.out.println("resultado: " + resultado);
 	}
 

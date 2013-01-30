@@ -14,6 +14,15 @@ public class Limite {
 	private BigDecimal parametroFuncion;
 	
 	private String punto;
+	
+	public Limite() { }
+	
+	public Limite(String punto, String valor){
+		this.inicializado = true;
+		this.calculado = true;
+		this.punto = punto;
+		this.valor = new BigDecimal(valor);
+	}
 
 	public String getPunto() {
 		return punto;

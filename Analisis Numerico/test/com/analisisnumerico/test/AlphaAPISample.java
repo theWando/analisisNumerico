@@ -47,7 +47,7 @@ public class AlphaAPISample {
     public static void main(String[] args) {
 
         // Use "pi" as the default query, or caller can supply it as the lone command-line argument.
-        String input = "(52 - 2) * ((6 + 3*(((52 - 2)/3) + 2) + 3*(((2/3)*(52 - 2)) + 2) + -5)/8)";
+        String input = "5+4";
         if (args.length > 0)
             input = args[0];
         
